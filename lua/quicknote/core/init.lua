@@ -22,6 +22,7 @@ return {
     OpenNoteAtCWD = open.OpenNoteAtCWD,
     OpenNoteAtLine = open.OpenNoteAtLine,
     OpenNoteAtCurrentLine = open.OpenNoteAtCurrentLine,
+    OpenNoteAtCurrentLineInFloatingWindow = open.OpenNoteAtCurrentLineInFloatingWindow,
 
     DeleteNoteAtGlobal = delete.DeleteNoteAtGlobal,
     DeleteNoteAtCWD = delete.DeleteNoteAtCWD,

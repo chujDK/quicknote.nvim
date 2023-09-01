@@ -18,13 +18,65 @@ local checkAndOpenNoteFile = function(noteFilePath)
     end)
 end
 
+local openFloatingWindow = function()
+    local buf = vim.api.nvim_create_buf(false, true)
+
+    vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+
+    local width = vim.api.nvim_get_option("columns")
+    local height = vim.api.nvim_get_option("lines")
+
+    local win_height = math.ceil(height * 0.8 - 4)
+    local win_width = math.ceil(width * 0.8)
+
+    local row = math.ceil((height - win_height) / 2 - 1)
+    local col = math.ceil((width - win_width) / 2)
+
+    local opts = {
+        style = "minimal",
+        relative = "editor",
+        width = win_width,
+        height = win_height,
+        row = row,
+        col = col,
+        border = "rounded",
+    }
+
+    local win = vim.api.nvim_open_win(buf, true, opts)
+    vim.api.nvim_win_set_option(win, "cursorline", true)
+
+    return buf, win
+end
+
+-- get note file path of a given line for the current buffer
+local getNotePathAtLine = function(line)
+    local noteDirPath = utils.path.getNoteDirPathForCurrentBuffer()
+    return path:new(noteDirPath, line .. "." .. utils.config.GetFileType()).filename
+end
+
+local OpenNoteAtCurrentLineInFloatingWindow = function()
+    local line = vim.api.nvim_win_get_cursor(0)[1]
+    local noteFilePath = getNotePathAtLine(line)
+
+    vim.loop.fs_stat(noteFilePath, function(err, _)
+        if err then
+            print("Note not found.")
+        else
+            local buf, win = openFloatingWindow()
+            vim.api.nvim_buf_set_option(buf, "modifiable", true)
+            vim.api.nvim_command("$read" .. noteFilePath)
+            vim.api.nvim_buf_set_option(0, "modifiable", false)
+        end
+    end)
+end
+M.OpenNoteAtCurrentLineInFloatingWindow = OpenNoteAtCurrentLineInFloatingWindow
+
+
 -- Open an already existed note at a given line for the current buffer
 -- @param line: line number
 local OpenNoteAtLine = function(line)
-    local noteDirPath = utils.path.getNoteDirPathForCurrentBuffer()
-    -- get note file path
-    local noteFilePath = path:new(noteDirPath, line .. "." .. utils.config.GetFileType()).filename
     -- check if note file exist
+    local noteFilePath = getNotePathAtLine(line)
     checkAndOpenNoteFile(noteFilePath)
 end
 M.OpenNoteAtLine = OpenNoteAtLine
