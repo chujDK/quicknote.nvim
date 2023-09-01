@@ -36,6 +36,7 @@ return {
     OpenNoteAtCurrentLine = core.OpenNoteAtCurrentLine,
     OpenNoteAtGlobal = core.OpenNoteAtGlobal,
     OpenNoteAtCWD = core.OpenNoteAtCWD,
+    PreviewNoteAtCurrentLine = core.PreviewNoteAtCurrentLine,
 
     DeleteNoteAtLine = core.DeleteNoteAtLine,
     DeleteNoteAtCurrentLine = core.DeleteNoteAtCurrentLine,
