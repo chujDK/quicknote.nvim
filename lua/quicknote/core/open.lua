@@ -54,7 +54,7 @@ local getNotePathAtLine = function(line)
     return path:new(noteDirPath, line .. "." .. utils.config.GetFileType()).filename
 end
 
-local OpenNoteAtCurrentLineInFloatingWindow = function()
+local PreviewNoteAtCurrentLine = function()
     local line = vim.api.nvim_win_get_cursor(0)[1]
     local noteFilePath = getNotePathAtLine(line)
 
@@ -69,7 +69,7 @@ local OpenNoteAtCurrentLineInFloatingWindow = function()
         end
     end)
 end
-M.OpenNoteAtCurrentLineInFloatingWindow = OpenNoteAtCurrentLineInFloatingWindow
+M.PreviewNoteAtCurrentLine = PreviewNoteAtCurrentLine
 
 
 -- Open an already existed note at a given line for the current buffer
